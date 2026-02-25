@@ -5,8 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'
+      - 'packages/**'
       - 'package.json'
+      - 'pnpm-workspace.yaml'
       - '.github/workflows/release.yml'
 
 permissions:

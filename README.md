@@ -1,20 +1,8 @@
-# TypeScript Project Template
+# TypeScript Monorepo Template
 
-A flexible, modern TypeScript project template ready for any use case.
+A flexible, modern TypeScript monorepo template ready for multi-package projects.
 
-## Features
-
-- ✨ **Modern TypeScript** – Latest version with strict mode enabled
-- 📦 **ESLint & Prettier** – Code quality and formatting configured
-- 🎣 **Git Hooks** – Husky + lint-staged for automated checks
-- 🚀 **GitHub Workflows** – CI/CD pipelines for testing and releases
-- 📝 **Documentation** – MIT license, contributing guide, and more
-- 🔧 **VSCode Ready** – Recommended extensions and debugging setup
-- 🤖 **Dependabot** – Automatic dependency updates
-
-## Quick Start
-
-### Prerequisites
+## Prerequisites
 
 - Node.js 18+ (see `.nvmrc`)
 - pnpm 9+ (or npm/yarn)
@@ -33,24 +21,28 @@ pnpm build
 
 ## Available Scripts
 
-- `pnpm build` – Build the project
-- `pnpm lint` – Run ESLint
-- `pnpm lint:fix` – Fix linting issues
-- `pnpm format` – Format code with Prettier
+- `pnpm build` – Build all workspace packages
+- `pnpm lint` – Run ESLint in all workspace packages
+- `pnpm lint:fix` – Fix linting issues in all workspace packages
+- `pnpm format` – Format all packages plus root docs/workflows
 - `pnpm format:check` – Check formatting without changes
-- `pnpm type-check` – TypeScript type checking
+- `pnpm type-check` – TypeScript type checking for all workspace packages
 
 ## Project Structure
 
-```
+```txt
 .
-├── src/              # Source code
-├── tests/            # Test files
-├── dist/             # Build output
+├── packages/
+│   └── core/
+│       ├── src/      # Source code
+│       ├── tests/    # Test files
+│       └── dist/     # Build output
 ├── .github/          # GitHub workflows & templates
 ├── .vscode/          # VSCode configuration
 ├── package.json
+├── pnpm-workspace.yaml
 ├── tsconfig.json
+├── tsconfig.base.json
 ├── eslint.config.js
 ├── .prettierrc
 └── README.md
@@ -58,7 +50,7 @@ pnpm build
 
 ## Configuration
 
-- **TypeScript:** [tsconfig.json](tsconfig.json)
+- **TypeScript:** [tsconfig.json](tsconfig.json), [tsconfig.base.json](tsconfig.base.json)
 - **ESLint:** [eslint.config.js](eslint.config.js)
 - **Prettier:** [.prettierrc](.prettierrc)
 - **Git Hooks:** [.lintstagedrc.json](.lintstagedrc.json)

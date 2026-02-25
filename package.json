@@ -1,33 +1,23 @@
 {
-  "name": "ts-project-template",
-  "version": "0.1.0",
-  "description": "A flexible TypeScript project template for any use case.",
+  "name": "ts-mono-template-monorepo",
+  "version": "0.0.0",
+  "description": "A flexible TypeScript monorepo template.",
+  "private": true,
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "files": [
-    "dist"
-  ],
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "build": "tsc",
-    "build:dev": "tsc --sourceMap",
-    "type-check": "tsc --noEmit",
-    "lint": "eslint src tests --ext .ts,.tsx,.mts,.mjs,.js,.jsx",
-    "lint:fix": "eslint src tests --ext .ts,.tsx,.mts,.mjs,.js,.jsx --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \"tests/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \".github/**/*.{yml,yaml,json,md}\" \"*.{json,md,yml,yaml}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \"tests/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \".github/**/*.{yml,yaml,json,md}\" \"*.{json,md,yml,yaml}\"",
+    "build": "pnpm -r build",
+    "build:dev": "pnpm -r build:dev",
+    "type-check": "pnpm -r type-check",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "format": "pnpm -r format && prettier --write \".github/**/*.{yml,yaml,json,md}\" \"*.{json,md,yml,yaml}\"",
+    "format:check": "pnpm -r format:check && prettier --check \".github/**/*.{yml,yaml,json,md}\" \"*.{json,md,yml,yaml}\"",
     "prepare": "husky install"
   },
+  "packageManager": "pnpm@9.0.0",
   "dependencies": {},
   "devDependencies": {
     "typescript-eslint": "^8.52.0",

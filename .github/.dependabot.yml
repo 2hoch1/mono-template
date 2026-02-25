@@ -1,9 +1,9 @@
 version: 2
 updates:
-  - package-ecosystem: npm
+  - package-ecosystem: pnpm
     directory: '/'
     schedule:
-      interval: weekly
+      interval: monthly
       day: monday
       time: '03:00'
     open-pull-requests-limit: 10
@@ -13,11 +13,7 @@ updates:
       - 2hoch1
     labels:
       - dependencies
-      - javascript
-    commit-message:
-      prefix: 'chore'
-      prefix-scope: deps
-      include: 'scope'
+      - dependabot
     allow:
       - dependency-type: all
     rebase-strategy: auto
