@@ -9,7 +9,10 @@ coverage/
 .env.local
 .env.*.local
 .cache/
-.vscode/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 .idea/
 *.iml
+*.tsbuildinfo
 out/

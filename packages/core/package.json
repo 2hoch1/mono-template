@@ -22,9 +22,13 @@
     "lint": "eslint src tests --ext .ts,.tsx,.mts,.mjs,.js,.jsx",
     "lint:fix": "eslint src tests --ext .ts,.tsx,.mts,.mjs,.js,.jsx --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \"tests/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \"tests/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\""
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \"tests/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.14"
+    "@vitest/coverage-v8": "^2.0.0",
+    "vitest": "^2.0.0"
   }
 }

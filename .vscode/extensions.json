@@ -1,13 +1,11 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
+    "davidanson.vscode-markdownlint",
     "esbenp.prettier-vscode",
     "ms-vscode.vscode-typescript-next",
-    "firsttris.vscode-jest-runner",
+    "vitest.explorer",
     "eamodio.gitlens",
-    "github.copilot",
-    "github.copilot-chat",
-    "editorconfig.editorconfig",
-    "ms-vscode.makefile-tools"
+    "editorconfig.editorconfig"
   ]
 }

@@ -1,0 +1,67 @@
+changelog:
+  exclude:
+    labels:
+      - dependencies
+      - dependabot
+      - in progress
+      - in review
+      - merge ready
+      - blocked
+      - discussion
+      - approved
+      - stale
+      - waiting for a response
+      - waiting for testers
+      - duplicate
+      - invalid
+      - wontfix
+      - AI pr
+      - bad pr
+    authors:
+      - dependabot
+      - github-actions
+  categories:
+    - title: Breaking Changes
+      labels:
+        - breaking change
+        - api changes
+    - title: Security
+      labels:
+        - security
+    - title: Features
+      labels:
+        - feature request
+    - title: Bug Fixes
+      labels:
+        - bug
+    - title: Performance
+      labels:
+        - performance
+    - title: Documentation
+      labels:
+        - documentation
+    - title: UI
+      labels:
+        - ui
+        - styles
+    - title: Infrastructure
+      labels:
+        - build
+        - ci
+        - infra
+    - title: Tests
+      labels:
+        - tests
+    - title: Maintenance
+      labels:
+        - chore
+        - typings
+        - error handling
+        - interactions
+        - utility
+    - title: Packages
+      labels:
+        - packages:core
+    - title: Other Changes
+      labels:
+        - '*'

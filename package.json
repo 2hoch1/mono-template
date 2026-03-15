@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "name": "ts-mono-template-monorepo",
   "version": "0.0.0",
   "description": "A flexible TypeScript monorepo template.",
@@ -15,11 +16,13 @@
     "lint:fix": "pnpm -r lint:fix",
     "format": "pnpm -r format && prettier --write \".github/**/*.{yml,yaml,json,md}\" \"*.{json,md,yml,yaml}\"",
     "format:check": "pnpm -r format:check && prettier --check \".github/**/*.{yml,yaml,json,md}\" \"*.{json,md,yml,yaml}\"",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "packageManager": "pnpm@9.0.0",
   "dependencies": {},
   "devDependencies": {
+    "@commitlint/cli": "^19.0.0",
+    "@commitlint/config-conventional": "^19.0.0",
     "typescript-eslint": "^8.52.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
