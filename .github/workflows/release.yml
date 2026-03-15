@@ -1,14 +1,32 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'packages/**'
-      - 'package.json'
-      - 'pnpm-workspace.yaml'
-      - '.github/workflows/release.yml'
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'alpha'
+        type: choice
+        options:
+          - alpha
+          - alpha-minor
+          - alpha-major
+          - release-minor
+          - release-patch
+      package:
+        description: 'Package to release'
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - ts-mono-template
+      dry_run:
+        description: 'Perform a dry run?'
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -17,7 +35,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release
   cancel-in-progress: false
 
 jobs:
@@ -25,85 +43,23 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v2
         with:
           version: 9
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Type check
-        run: pnpm type-check
-
-      - name: Test
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: |
-            packages/*/dist
-            node_modules
-            packages/*/node_modules
-
-  changelog:
-    name: Changelog
-    runs-on: ubuntu-latest
-    needs: test
-    outputs:
-      changelog: ${{ steps.changelog.outputs.changelog }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Generate changelog
-        id: changelog
-        uses: mikepenz/release-changelog-builder-action@v5
-        with:
-          configurationJson: |
-            {
-              "template": "#{{CHANGELOG}}",
-              "pr_template": "- #{{TITLE}} (#{{NUMBER}})",
-              "categories": [
-                { "title": "## Breaking Changes", "labels": ["breaking change", "api changes"] },
-                { "title": "## Security", "labels": ["security"] },
-                { "title": "## Features", "labels": ["feature request"] },
-                { "title": "## Bug Fixes", "labels": ["bug"] },
-                { "title": "## Performance", "labels": ["performance"] },
-                { "title": "## Documentation", "labels": ["documentation"] },
-                { "title": "## UI", "labels": ["ui", "styles"] },
-                { "title": "## Infrastructure", "labels": ["build", "ci", "infra"] },
-                { "title": "## Tests", "labels": ["tests"] },
-                { "title": "## Maintenance", "labels": ["chore", "typings", "error handling", "interactions", "utility"] },
-                { "title": "## Packages", "labels": ["packages:core"] },
-                { "title": "## Other Changes", "labels": [] }
-              ],
-              "label_extractor": [
-                { "pattern": ".*", "on_property": "labels", "method": "match" }
-              ]
-            }
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm type-check
+      - run: pnpm -r test
+      - run: pnpm build
 
   release:
     name: Release
@@ -125,19 +81,42 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
           registry-url: https://registry.npmjs.org
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
 
-      - name: Semantic Release
+      - name: Semantic Release (all packages)
+        if: ${{ inputs.package == 'all' }}
         uses: cycjimmy/semantic-release-action@v6
         with:
           semantic_version: 24
+          dry_run: ${{ inputs.dry_run }}
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
+          branches: >
+            [${{ startsWith(inputs.release_type, 'release')
+              && '"main"'
+              || '{ "name": "main", "prerelease": "alpha", "channel": "alpha" }' }}]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Semantic Release (single package)
+        if: ${{ inputs.package != 'all' }}
+        uses: cycjimmy/semantic-release-action@v6
+        with:
+          semantic_version: 24
+          dry_run: ${{ inputs.dry_run }}
+          working_directory: packages/core
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/git
+          branches: >
+            [${{ startsWith(inputs.release_type, 'release')
+              && '"main"'
+              || '{ "name": "main", "prerelease": "alpha", "channel": "alpha" }' }}]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
