@@ -59,7 +59,6 @@ jobs:
       - run: pnpm lint
       - run: pnpm type-check
       - run: pnpm -r test
-      - run: pnpm build
 
   release:
     name: Release
@@ -85,6 +84,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
           registry-url: https://registry.npmjs.org
 
+      - run: npm install -g npm@latest
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
 
