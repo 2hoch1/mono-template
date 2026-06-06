@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/package",
-  "name": "ts-mono-template-monorepo",
+  "name": "ts-monorepo-template",
   "version": "0.0.0",
-  "description": "A flexible TypeScript monorepo template.",
+  "description": "A TypeScript monorepo template.",
   "private": true,
   "type": "module",
   "engines": {
