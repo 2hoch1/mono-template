@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@workspace/typescript/base",
   "compilerOptions": {
     "noEmit": true,
     "outDir": "./dist",

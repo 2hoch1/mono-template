@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.0.0",
+    "@workspace/typescript": "workspace:*",
     "vitest": "^2.0.0"
   }
 }
