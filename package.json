@@ -6,7 +6,8 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">= 24.14.0",
+    "pnpm": ">=10"
   },
   "scripts": {
     "build": "pnpm -r build",
@@ -16,11 +17,14 @@
     "lint:fix": "pnpm -r lint:fix",
     "format": "pnpm -r format && prettier --write \".github/**/*.{yml,yaml,json,md}\" \"*.{json,md,yml,yaml}\"",
     "format:check": "pnpm -r format:check && prettier --check \".github/**/*.{yml,yaml,json,md}\" \"*.{json,md,yml,yaml}\"",
+    "version": "pnpm changeset version && pnpm install --lockfile-only",
+    "release": "pnpm run build && pnpm changeset publish",
     "prepare": "husky"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@11.3.0",
   "dependencies": {},
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "@commitlint/cli": "^19.0.0",
     "@commitlint/config-conventional": "^19.0.0",
     "typescript-eslint": "^8.52.0",

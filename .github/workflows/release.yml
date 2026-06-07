@@ -1,122 +1,45 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_type:
-        description: 'Release type'
-        required: true
-        default: 'alpha'
-        type: choice
-        options:
-          - alpha
-          - alpha-minor
-          - alpha-major
-          - release-minor
-          - release-patch
-      package:
-        description: 'Package to release'
-        required: true
-        default: all
-        type: choice
-        options:
-          - all
-          - ts-mono-template
-      dry_run:
-        description: 'Perform a dry run?'
-        required: true
-        default: false
-        type: boolean
+  push:
+    branches: [main]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   contents: write
-  issues: write
   pull-requests: write
   id-token: write
 
-concurrency:
-  group: release
-  cancel-in-progress: false
-
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 9
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm type-check
-      - run: pnpm -r test
-
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: test
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          persist-credentials: false
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-          registry-url: https://registry.npmjs.org
 
-      - run: npm install -g npm@latest
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
 
-      - name: Semantic Release (all packages)
-        if: ${{ inputs.package == 'all' }}
-        uses: cycjimmy/semantic-release-action@v6
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
         with:
-          semantic_version: 24
-          dry_run: ${{ inputs.dry_run }}
-          extra_plugins: |
-            @semantic-release/changelog
-            @semantic-release/git
-          branches: >
-            [${{ startsWith(inputs.release_type, 'release')
-              && '"main"'
-              || '{ "name": "main", "prerelease": "alpha", "channel": "alpha" }' }}]
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Semantic Release (single package)
-        if: ${{ inputs.package != 'all' }}
-        uses: cycjimmy/semantic-release-action@v6
-        with:
-          semantic_version: 24
-          dry_run: ${{ inputs.dry_run }}
-          working_directory: packages/core
-          extra_plugins: |
-            @semantic-release/changelog
-            @semantic-release/git
-          branches: >
-            [${{ startsWith(inputs.release_type, 'release')
-              && '"main"'
-              || '{ "name": "main", "prerelease": "alpha", "channel": "alpha" }' }}]
+          publish: pnpm run release
+          version: pnpm run version
+          title: 'chore: release packages'
+          commit: 'chore: release packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

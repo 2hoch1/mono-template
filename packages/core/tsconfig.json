@@ -3,11 +3,7 @@
   "compilerOptions": {
     "noEmit": true,
     "outDir": "./dist",
-    "baseUrl": ".",
-    "types": ["vitest/globals"],
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "types": ["vitest/globals"]
   },
   "include": ["src", "tests"],
   "exclude": ["node_modules", "dist"]
