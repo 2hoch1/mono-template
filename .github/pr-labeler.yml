@@ -42,7 +42,7 @@ build:
           - tsconfig*.json
           - packages/*/tsconfig*.json
           - eslint.config.js
-          - .prettierrc
+          - prettier.config.js
           - .prettierignore
           - .editorconfig
           - .gitignore

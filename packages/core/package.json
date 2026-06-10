@@ -3,29 +3,14 @@
   "version": "0.1.0",
   "description": "Core package for the TypeScript monorepo template.",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:dev": "tsc -p tsconfig.build.json --sourceMap",
-    "type-check": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint src tests --ext .ts,.tsx,.mts,.mjs,.js,.jsx",
-    "lint:fix": "eslint src tests --ext .ts,.tsx,.mts,.mjs,.js,.jsx --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \"tests/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \"tests/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\"",
-    "test": "vitest run",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write --no-error-on-unmatched-pattern \"src/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \"tests/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\"",
+    "format:check": "prettier --check --no-error-on-unmatched-pattern \"src/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\" \"tests/**/*.{ts,tsx,mts,mjs,js,jsx,json,md}\"",
+    "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage --passWithNoTests"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.0.0",

@@ -6,3 +6,6 @@ coverage
 .env*
 !.env.example
 .git
+
+# Generated lockfile (do not format)
+pnpm-lock.yaml
