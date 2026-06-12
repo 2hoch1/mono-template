@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./base": "./base.json"
+    "./base": "./base.json",
+    "./library": "./library.json"
   }
 }
