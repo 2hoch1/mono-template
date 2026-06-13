@@ -2,7 +2,5 @@ packages:
   - 'packages/*'
   - 'tooling/*'
 
-# esbuild fetches its native binary via a postinstall build script.
-# pnpm blocks build scripts by default, so allow esbuild's (needed by vitest/vite).
-onlyBuiltDependencies:
-  - esbuild
+allowBuilds:
+  esbuild: true
